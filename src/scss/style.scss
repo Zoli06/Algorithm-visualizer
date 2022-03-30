@@ -1,0 +1,28 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	max-height: 100vh;
+
+    header {
+        height: 20vh;
+
+        h1 {
+            font-size: 2.5rem;
+        }
+    }
+
+	.numbersContainer {
+		height: 80vh;
+        display: flex;
+        position: relative;
+
+		.number {
+			background-color: black;
+			width: 2%;
+			position: absolute;
+			top: 0;
+		}
+	}
+}

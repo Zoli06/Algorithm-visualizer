@@ -1,15 +1,15 @@
 import './extensions.js';
 /*static*/ class Sorting {
-    static numbers = Array.from({ length: 40 }, () => Math.getRandomArbitrary(20, 80));
+    static numbers = Array.from({ length: 8 }, () => Math.getRandomArbitrary(20, 80));
     static defaultColor = 'black';
     static activeColor = 'red';
-    static animationDuration = 500;
-    static delayAfterAnimation = 200;
+    static animationDuration = 1000;
+    static delayAfterAnimation = 1000;
     static isActiveColorWhenDelay = true;
     constructor() {
         throw 'Sorting class is static';
     }
-    static drawNumbers() {
+    static draw() {
         $('.numbersContainer').empty();
         for (let i = 0; i < this.numbers.length; i++) {
             $('.numbersContainer').append(`<div class="number" style="height: ${this.numbers[i]}%; left: ${i * (100 / this.numbers.length)}%; color: "${this.defaultColor}"></div>`);
@@ -48,7 +48,7 @@ import './extensions.js';
     }
     static async animationFinished() {
         await new Promise((r) => setTimeout(r, this.animationDuration + this.delayAfterAnimation));
-        this.drawNumbers();
+        this.draw();
     }
     static async bubbleSort() {
         for (let i = 0; i < this.numbers.length; i++) {
@@ -79,7 +79,50 @@ import './extensions.js';
             await this.insert(i, j + 1);
         }
     }
-    static async quickSortIterative(l = 0, h = this.numbers.length - 1) {
+    // static async mergeSort() {
+    //     const merge = (l: number, m: number, r: number) => {
+    //         let n1 = m - l + 1;
+    //         let n2 = r - m;
+    //         let L = Array(n1).fill(0);
+    //         let R = Array(n2).fill(0);
+    //         for (let i = 0; i < n1; i++)
+    //             L[i] = this.numbers[l + i];
+    //         for (let j = 0; j < n2; j++)
+    //             R[j] = this.numbers[m + 1 + j];
+    //         let i = 0;
+    //         let j = 0;
+    //         let k = l;
+    //         while (i < n1 && j < n2) {
+    //             if (L[i] <= R[j]) {
+    //                 this.numbers[k] = L[i];
+    //                 i++;
+    //             } else {
+    //                 this.numbers[k] = R[j];
+    //                 j++;
+    //             }
+    //             k++;
+    //         }
+    //         while (i < n1) {
+    //             this.numbers[k] = L[i];
+    //             i++;
+    //             k++;
+    //         }
+    //         while (j < n2) {
+    //             this.numbers[k] = R[j];
+    //             j++;
+    //             k++;
+    //         }
+    //         console.log(this.numbers);
+    //     }
+    //     for (let curr_size = 1; curr_size <= this.numbers.length - 1; curr_size = 2 * curr_size) {
+    //         for (let left_start = 0; left_start < this.numbers.length - 1; left_start += 2 * curr_size) {
+    //             let mid = Math.min(left_start + curr_size - 1, this.numbers.length - 1);
+    //             let right_end = Math.min(left_start + 2 * curr_size - 1, this.numbers.length - 1);
+    //             merge(left_start, mid, right_end);
+    //         }
+    //     }
+    // }
+    static async quickSort(l = 0, h = this.numbers.length - 1) {
         const partition = async (low, high) => {
             let pivot = this.numbers[high];
             let i = low - 1;
@@ -112,6 +155,42 @@ import './extensions.js';
         }
     }
 }
-Sorting.drawNumbers();
+let algorithms = { 'Sorting': ['Bubble Sort', 'Selection Sort', 'Insertion Sort', /*'Merge Sort', */ 'Quick Sort'] };
+function run() {
+    switch ($('#algorithm-types').find(":selected").text()) {
+        case 'Sorting':
+            switch ($('#algorithms').find(":selected").text()) {
+                case 'Bubble Sort':
+                    Sorting.bubbleSort();
+                    break;
+                case 'Selection Sort':
+                    Sorting.selectionSort();
+                    break;
+                case 'Insertion Sort':
+                    Sorting.insertionSort();
+                    break;
+                // case 'Merge Sort':
+                //     Sorting.mergeSort();
+                //     break;
+                case 'Quick Sort':
+                    Sorting.quickSort();
+                    break;
+            }
+            break;
+    }
+    return false;
+}
+function fillAlgorithmTypes() {
+    Object.keys(algorithms).forEach(algorithmType => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        algorithms[algorithmType].forEach(algorithm => {
+            $('#algorithms').append($('<option>').text(algorithm).attr('value', algorithm.toLowerCase().replace(' ', '')));
+        });
+        $('#algorithm-types').append($('<option>').text(algorithmType).attr('value', algorithmType.toLowerCase().replace(' ', '')));
+    });
+}
+fillAlgorithmTypes();
+Sorting.draw();
 await new Promise((r) => setTimeout(r, 1000));
-Sorting.insertionSort();
+$('#run').on('click', run);

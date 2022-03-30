@@ -1,0 +1,32 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  max-height: 100vh;
+}
+
+body header {
+  height: 20vh;
+}
+
+body header h1 {
+  font-size: 2.5rem;
+}
+
+body .numbersContainer {
+  height: 80vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+body .numbersContainer .number {
+  background-color: black;
+  width: 2%;
+  position: absolute;
+  top: 0;
+}
+/*# sourceMappingURL=style.css.map */
