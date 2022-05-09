@@ -1,7 +1,7 @@
 import './extensions.js';
 
 /*static*/ class Sorting {
-    private static numbers: number[] = Array.from({ length: 8 }, () =>
+    private static numbers: number[] = Array.from({ length: 16 }, () =>
         Math.getRandomArbitrary(20, 80)
     );
     static defaultColor: string = 'black';
